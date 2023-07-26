@@ -1,49 +1,49 @@
 // ** React Imports
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useState } from 'react';
 
 // ** MUI Import
-import Box from '@mui/material/Box'
-import Tab from '@mui/material/Tab'
-import Card from '@mui/material/Card'
-import TabList from '@mui/lab/TabList'
-import Table from '@mui/material/Table'
-import TabPanel from '@mui/lab/TabPanel'
-import Avatar from '@mui/material/Avatar'
-import TabContext from '@mui/lab/TabContext'
-import TableRow from '@mui/material/TableRow'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import CardHeader from '@mui/material/CardHeader'
-import TableContainer from '@mui/material/TableContainer'
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Card from '@mui/material/Card';
+import TabList from '@mui/lab/TabList';
+import Table from '@mui/material/Table';
+import TabPanel from '@mui/lab/TabPanel';
+import Avatar from '@mui/material/Avatar';
+import TabContext from '@mui/lab/TabContext';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import CardHeader from '@mui/material/CardHeader';
+import TableContainer from '@mui/material/TableContainer';
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from 'src/@core/components/icon';
 
 // ** Custom Components Imports
-import OptionsMenu from 'src/@core/components/option-menu'
+import OptionsMenu from 'src/@core/components/option-menu';
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba';
 
 interface TabAvatarType {
-  imgWidth: number
-  category: string
-  imgHeight: number
+  imgWidth: number;
+  category: string;
+  imgHeight: number;
 }
 interface TabContentType {
-  price: string
-  total: string
-  imgAlt: string
-  imgSrc: string
-  product: string
-  quantity: number
+  price: string;
+  total: string;
+  imgAlt: string;
+  imgSrc: string;
+  product: string;
+  quantity: number;
 }
 interface TabContentDataType {
-  watch: TabContentType[]
-  mobile: TabContentType[]
-  desktop: TabContentType[]
-  console: TabContentType[]
+  watch: TabContentType[];
+  mobile: TabContentType[];
+  desktop: TabContentType[];
+  console: TabContentType[];
 }
 
 const tabAvatars: TabAvatarType[] = [
@@ -67,7 +67,7 @@ const tabAvatars: TabAvatarType[] = [
     imgHeight: 50,
     category: 'watch'
   }
-]
+];
 
 const tabContentData: TabContentDataType = {
   mobile: [
@@ -206,9 +206,9 @@ const tabContentData: TabContentDataType = {
       imgSrc: '/images/cards/gramin-verve.png'
     }
   ]
-}
+};
 
-const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
+const RenderTabContent = ({ data }: { data: TabContentType[]; }) => {
   return (
     <TableContainer>
       <Table>
@@ -230,7 +230,7 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
                   border: 0,
                   py: theme => `${theme.spacing(1.5)} !important`
                 },
-                '&:first-child .MuiTableCell-body': {
+                '&:first-of-type .MuiTableCell-body': {
                   pt: theme => `${theme.spacing(3)} !important`
                 },
                 '&:last-child .MuiTableCell-body': {
@@ -250,18 +250,18 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
+  );
+};
 
 const CardTopReferralSources = () => {
   // ** State
-  const [value, setValue] = useState<string>('mobile')
+  const [value, setValue] = useState<string>('mobile');
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
-  const RenderTabAvatar = ({ data }: { data: TabAvatarType }) => (
+  const RenderTabAvatar = ({ data }: { data: TabAvatarType; }) => (
     <Avatar
       variant='rounded'
       alt={`tabs-${data.category}`}
@@ -275,7 +275,7 @@ const CardTopReferralSources = () => {
           value === data.category ? `2px solid ${theme.palette.primary.main}` : `2px dashed ${theme.palette.divider}`
       }}
     />
-  )
+  );
 
   return (
     <Card>
@@ -354,7 +354,7 @@ const CardTopReferralSources = () => {
         </TabPanel>
       </TabContext>
     </Card>
-  )
-}
+  );
+};
 
-export default CardTopReferralSources
+export default CardTopReferralSources;

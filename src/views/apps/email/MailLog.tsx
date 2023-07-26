@@ -1,34 +1,34 @@
 // ** React Imports
-import { Fragment, useState, SyntheticEvent, ReactNode } from 'react'
+import { Fragment, useState, SyntheticEvent, ReactNode } from 'react';
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import List from '@mui/material/List'
-import Input from '@mui/material/Input'
-import Avatar from '@mui/material/Avatar'
-import Divider from '@mui/material/Divider'
-import Tooltip from '@mui/material/Tooltip'
-import Backdrop from '@mui/material/Backdrop'
-import Checkbox from '@mui/material/Checkbox'
-import { styled } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import InputAdornment from '@mui/material/InputAdornment'
-import CircularProgress from '@mui/material/CircularProgress'
-import ListItem, { ListItemProps } from '@mui/material/ListItem'
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import Input from '@mui/material/Input';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import Backdrop from '@mui/material/Backdrop';
+import Checkbox from '@mui/material/Checkbox';
+import { styled } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import InputAdornment from '@mui/material/InputAdornment';
+import CircularProgress from '@mui/material/CircularProgress';
+import ListItem, { ListItemProps } from '@mui/material/ListItem';
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from 'src/@core/components/icon';
 
 // ** Third Party Imports
-import PerfectScrollbar from 'react-perfect-scrollbar'
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // ** Custom Components Imports
-import OptionsMenu from 'src/@core/components/option-menu'
+import OptionsMenu from 'src/@core/components/option-menu';
 
 // ** Email App Component Imports
-import { setTimeout } from 'timers'
-import MailDetails from './MailDetails'
+import { setTimeout } from 'timers';
+import MailDetails from './MailDetails';
 
 // ** Types
 import {
@@ -38,8 +38,8 @@ import {
   MailFolderType,
   MailFoldersArrType,
   MailFoldersObjType
-} from 'src/types/apps/emailTypes'
-import { OptionType } from 'src/@core/components/option-menu/types'
+} from 'src/types/apps/emailTypes';
+import { OptionType } from 'src/@core/components/option-menu/types';
 
 const MailItem = styled(ListItem)<ListItemProps>(({ theme }) => ({
   cursor: 'pointer',
@@ -47,7 +47,7 @@ const MailItem = styled(ListItem)<ListItemProps>(({ theme }) => ({
   paddingBottom: theme.spacing(3),
   justifyContent: 'space-between',
   transition: 'border 0.15s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-  '&:not(:first-child)': {
+  '&:not(:first-of-type)': {
     borderTop: `1px solid ${theme.palette.divider}`
   },
   '&:hover': {
@@ -66,15 +66,15 @@ const MailItem = styled(ListItem)<ListItemProps>(({ theme }) => ({
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5)
   }
-}))
+}));
 
-const ScrollWrapper = ({ children, hidden }: { children: ReactNode; hidden: boolean }) => {
+const ScrollWrapper = ({ children, hidden }: { children: ReactNode; hidden: boolean; }) => {
   if (hidden) {
-    return <Box sx={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>{children}</Box>
+    return <Box sx={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>{children}</Box>;
   } else {
-    return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
+    return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>;
   }
-}
+};
 
 const MailLog = (props: MailLogType) => {
   // ** Props
@@ -97,10 +97,10 @@ const MailLog = (props: MailLogType) => {
     setMailDetailsOpen,
     handleSelectAllMail,
     handleLeftSidebarToggle
-  } = props
+  } = props;
 
   // ** State
-  const [refresh, setRefresh] = useState<boolean>(false)
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   // ** Vars
   const folders: MailFoldersArrType[] = [
@@ -136,7 +136,7 @@ const MailLog = (props: MailLogType) => {
         </Box>
       )
     }
-  ]
+  ];
 
   const foldersConfig = {
     draft: {
@@ -171,7 +171,7 @@ const MailLog = (props: MailLogType) => {
         </Box>
       )
     }
-  }
+  };
 
   const foldersObj: MailFoldersObjType = {
     inbox: [foldersConfig.spam, foldersConfig.trash],
@@ -179,41 +179,41 @@ const MailLog = (props: MailLogType) => {
     draft: [foldersConfig.trash],
     spam: [foldersConfig.inbox, foldersConfig.trash],
     trash: [foldersConfig.inbox, foldersConfig.spam]
-  }
+  };
 
   const handleMoveToTrash = () => {
-    dispatch(updateMail({ emailIds: store.selectedMails, dataToUpdate: { folder: 'trash' } }))
-    dispatch(handleSelectAllMail(false))
-  }
+    dispatch(updateMail({ emailIds: store.selectedMails, dataToUpdate: { folder: 'trash' } }));
+    dispatch(handleSelectAllMail(false));
+  };
 
   const handleStarMail = (e: SyntheticEvent, id: number, value: boolean) => {
-    e.stopPropagation()
-    dispatch(updateMail({ emailIds: [id], dataToUpdate: { isStarred: value } }))
-  }
+    e.stopPropagation();
+    dispatch(updateMail({ emailIds: [id], dataToUpdate: { isStarred: value } }));
+  };
 
   const handleReadMail = (id: number | number[], value: boolean) => {
-    const arr = Array.isArray(id) ? [...id] : [id]
-    dispatch(updateMail({ emailIds: arr, dataToUpdate: { isRead: value } }))
-    dispatch(handleSelectAllMail(false))
-  }
+    const arr = Array.isArray(id) ? [...id] : [id];
+    dispatch(updateMail({ emailIds: arr, dataToUpdate: { isRead: value } }));
+    dispatch(handleSelectAllMail(false));
+  };
 
   const handleLabelUpdate = (id: number | number[], label: MailLabelType) => {
-    const arr = Array.isArray(id) ? [...id] : [id]
-    dispatch(updateMailLabel({ emailIds: arr, label }))
-  }
+    const arr = Array.isArray(id) ? [...id] : [id];
+    dispatch(updateMailLabel({ emailIds: arr, label }));
+  };
 
   const handleFolderUpdate = (id: number | number[], folder: MailFolderType) => {
-    const arr = Array.isArray(id) ? [...id] : [id]
-    dispatch(updateMail({ emailIds: arr, dataToUpdate: { folder } }))
-  }
+    const arr = Array.isArray(id) ? [...id] : [id];
+    dispatch(updateMail({ emailIds: arr, dataToUpdate: { folder } }));
+  };
 
   const handleRefreshMailsClick = () => {
-    setRefresh(true)
-    setTimeout(() => setRefresh(false), 1000)
-  }
+    setRefresh(true);
+    setTimeout(() => setRefresh(false), 1000);
+  };
 
   const handleLabelsMenu = () => {
-    const array: OptionType[] = []
+    const array: OptionType[] = [];
     Object.entries(labelColors).map(([key, value]: string[]) => {
       array.push({
         text: <Typography sx={{ textTransform: 'capitalize' }}>{key}</Typography>,
@@ -224,65 +224,65 @@ const MailLog = (props: MailLogType) => {
         ),
         menuItemProps: {
           onClick: () => {
-            handleLabelUpdate(store.selectedMails, key as MailLabelType)
-            dispatch(handleSelectAllMail(false))
+            handleLabelUpdate(store.selectedMails, key as MailLabelType);
+            dispatch(handleSelectAllMail(false));
           }
         }
-      })
-    })
+      });
+    });
 
-    return array
-  }
+    return array;
+  };
 
   const handleFoldersMenu = () => {
-    const array: OptionType[] = []
+    const array: OptionType[] = [];
 
     if (routeParams && routeParams.folder && !routeParams.label && foldersObj[routeParams.folder]) {
       foldersObj[routeParams.folder].map((folder: MailFoldersArrType) => {
-        array.length = 0
+        array.length = 0;
         array.push({
           icon: folder.icon,
           text: <Typography sx={{ textTransform: 'capitalize' }}>{folder.name}</Typography>,
           menuItemProps: {
             onClick: () => {
-              handleFolderUpdate(store.selectedMails, folder.name)
-              dispatch(handleSelectAllMail(false))
+              handleFolderUpdate(store.selectedMails, folder.name);
+              dispatch(handleSelectAllMail(false));
             }
           }
-        })
-      })
+        });
+      });
     } else if (routeParams && routeParams.label) {
       folders.map((folder: MailFoldersArrType) => {
-        array.length = 0
+        array.length = 0;
         array.push({
           icon: folder.icon,
           text: <Typography sx={{ textTransform: 'capitalize' }}>{folder.name}</Typography>,
           menuItemProps: {
             onClick: () => {
-              handleFolderUpdate(store.selectedMails, folder.name)
-              dispatch(handleSelectAllMail(false))
+              handleFolderUpdate(store.selectedMails, folder.name);
+              dispatch(handleSelectAllMail(false));
             }
           }
-        })
-      })
+        });
+      });
     } else {
       foldersObj['inbox'].map((folder: MailFoldersArrType) => {
-        array.length = 0
+        array.length = 0;
         array.push({
           icon: folder.icon,
           text: <Typography sx={{ textTransform: 'capitalize' }}>{folder.name}</Typography>,
           menuItemProps: {
             onClick: () => {
-              handleFolderUpdate(store.selectedMails, folder.name)
-              dispatch(handleSelectAllMail(false))
+              handleFolderUpdate(store.selectedMails, folder.name);
+              dispatch(handleSelectAllMail(false));
             }
           }
-        })
-      })
+        });
+      });
     }
 
-    return array
-  }
+    return array;
+  };
 
   const renderMailLabels = (arr: MailLabelType[]) => {
     return arr.map((label: MailLabelType, index: number) => {
@@ -290,9 +290,9 @@ const MailLog = (props: MailLogType) => {
         <Box key={index} component='span' sx={{ mr: 3.5, color: `${labelColors[label]}.main` }}>
           <Icon icon='mdi:circle' fontSize='0.625rem' />
         </Box>
-      )
-    })
-  }
+      );
+    });
+  };
 
   const mailDetailsProps = {
     hidden,
@@ -310,7 +310,7 @@ const MailLog = (props: MailLogType) => {
     handleFolderUpdate,
     setMailDetailsOpen,
     mail: store && store.currentMail ? store.currentMail : null
-  }
+  };
 
   return (
     <Box sx={{ width: '100%', overflow: 'hidden', position: 'relative', '& .ps__rail-y': { zIndex: 5 } }}>
@@ -388,19 +388,19 @@ const MailLog = (props: MailLogType) => {
             {store && store.mails && store.mails.length ? (
               <List sx={{ p: 0 }}>
                 {store.mails.map((mail: MailType) => {
-                  const mailReadToggleIcon = mail.isRead ? 'mdi:email-outline' : 'mdi:email-open-outline'
+                  const mailReadToggleIcon = mail.isRead ? 'mdi:email-outline' : 'mdi:email-open-outline';
 
                   return (
                     <MailItem
                       key={mail.id}
                       sx={{ backgroundColor: mail.isRead ? 'action.hover' : 'background.paper' }}
                       onClick={() => {
-                        setMailDetailsOpen(true)
-                        dispatch(getCurrentMail(mail.id))
-                        dispatch(updateMail({ emailIds: [mail.id], dataToUpdate: { isRead: true } }))
+                        setMailDetailsOpen(true);
+                        dispatch(getCurrentMail(mail.id));
+                        dispatch(updateMail({ emailIds: [mail.id], dataToUpdate: { isRead: true } }));
                         setTimeout(() => {
-                          dispatch(handleSelectAllMail(false))
-                        }, 600)
+                          dispatch(handleSelectAllMail(false));
+                        }, 600);
                       }}
                     >
                       <Box sx={{ mr: 4, display: 'flex', overflow: 'hidden', alignItems: 'center' }}>
@@ -460,8 +460,8 @@ const MailLog = (props: MailLogType) => {
                           <Tooltip placement='top' title='Delete Mail'>
                             <IconButton
                               onClick={e => {
-                                e.stopPropagation()
-                                dispatch(updateMail({ emailIds: [mail.id], dataToUpdate: { folder: 'trash' } }))
+                                e.stopPropagation();
+                                dispatch(updateMail({ emailIds: [mail.id], dataToUpdate: { folder: 'trash' } }));
                               }}
                             >
                               <Icon icon='mdi:delete-outline' />
@@ -472,8 +472,8 @@ const MailLog = (props: MailLogType) => {
                         <Tooltip placement='top' title={mail.isRead ? 'Unread Mail' : 'Read Mail'}>
                           <IconButton
                             onClick={e => {
-                              e.stopPropagation()
-                              handleReadMail([mail.id], !mail.isRead)
+                              e.stopPropagation();
+                              handleReadMail([mail.id], !mail.isRead);
                             }}
                           >
                             <Icon icon={mailReadToggleIcon} />
@@ -482,8 +482,8 @@ const MailLog = (props: MailLogType) => {
                         <Tooltip placement='top' title='Move to Spam'>
                           <IconButton
                             onClick={e => {
-                              e.stopPropagation()
-                              handleFolderUpdate([mail.id], 'spam')
+                              e.stopPropagation();
+                              handleFolderUpdate([mail.id], 'spam');
                             }}
                           >
                             <Icon icon='mdi:alert-octagon-outline' />
@@ -507,7 +507,7 @@ const MailLog = (props: MailLogType) => {
                         </Typography>
                       </Box>
                     </MailItem>
-                  )
+                  );
                 })}
               </List>
             ) : (
@@ -535,7 +535,7 @@ const MailLog = (props: MailLogType) => {
       {/* @ts-ignore */}
       <MailDetails {...mailDetailsProps} />
     </Box>
-  )
-}
+  );
+};
 
-export default MailLog
+export default MailLog;
