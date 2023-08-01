@@ -21,6 +21,11 @@ const navigation = (): HorizontalNavItemsType => {
           icon: 'mdi:cart-outline',
           title: 'eCommerce',
           path: '/dashboards/ecommerce'
+        },
+        {
+          icon: 'mdi:chart-timeline-variant',
+          title: 'Shipments',
+          path: '/dashboards/shipments'
         }
       ]
     },
