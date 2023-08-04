@@ -8,9 +8,11 @@ import email from 'src/store/apps/email'
 import invoice from 'src/store/apps/invoice'
 import calendar from 'src/store/apps/calendar'
 import permissions from 'src/store/apps/permissions'
+import shipment from 'src/store/apps/shipments'
 
 export const store = configureStore({
   reducer: {
+    shipment,
     user,
     chat,
     email,

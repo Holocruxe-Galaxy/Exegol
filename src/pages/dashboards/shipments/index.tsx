@@ -11,7 +11,6 @@ import Card from '@mui/material/Card';
 import Menu from '@mui/material/Menu';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-import { styled } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -30,13 +29,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip';
-import CustomAvatar from 'src/@core/components/mui/avatar';
-
-// ** Utils Import
-import { getInitials } from 'src/@core/utils/get-initials';
 
 // ** Actions Imports
-import { fetchData, deleteUser } from 'src/store/apps/user';
+import { deleteUser } from 'src/store/apps/user';
 
 // ** Third Party Components
 import axios from 'axios';
@@ -45,64 +40,22 @@ import axios from 'axios';
 import { RootState, AppDispatch } from 'src/store';
 import { CardStatsType } from 'src/@fake-db/types';
 import { ThemeColor } from 'src/@core/layouts/types';
-import { UsersType } from 'src/types/apps/userTypes';
 
 // ** Custom Table Components Imports
 import TableHeader from 'src/views/dashboards/shipments/filter/TableHeader';
-
-interface UserRoleType {
-  [key: string]: { icon: string; color: string; };
-}
+import { ResponseShipment, fetchData } from 'src/store/apps/shipments';
 
 interface UserStatusType {
   [key: string]: ThemeColor;
 }
 
-// ** Vars
-const userRoleObj: UserRoleType = {
-  admin: { icon: 'mdi:laptop', color: 'error.main' },
-  author: { icon: 'mdi:cog-outline', color: 'warning.main' },
-  editor: { icon: 'mdi:pencil-outline', color: 'info.main' },
-  maintainer: { icon: 'mdi:chart-donut', color: 'success.main' },
-  subscriber: { icon: 'mdi:account-outline', color: 'primary.main' }
-};
-
 interface CellType {
-  row: UsersType;
+  row: ResponseShipment;
 }
 
 const userStatusObj: UserStatusType = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
-};
-
-const LinkStyled = styled(Link)(({ theme }) => ({
-  fontWeight: 600,
-  fontSize: '1rem',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  color: theme.palette.text.secondary,
-  '&:hover': {
-    color: theme.palette.primary.main
-  }
-}));
-
-// ** renders client column
-const renderClient = (row: UsersType) => {
-  if (row.avatar.length) {
-    return <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 34, height: 34 }} />;
-  } else {
-    return (
-      <CustomAvatar
-        skin='light'
-        color={row.avatarColor || 'primary'}
-        sx={{ mr: 3, width: 34, height: 34, fontSize: '1rem' }}
-      >
-        {getInitials(row.fullName ? row.fullName : 'John Doe')}
-      </CustomAvatar>
-    );
-  }
+  residential: 'success',
+  business: 'primary'
 };
 
 const RowOptions = ({ id }: { id: number | string; }) => {
@@ -172,48 +125,13 @@ const columns: GridColDef[] = [
   {
     flex: 0.2,
     minWidth: 230,
-    field: 'fullName',
-    headerName: 'User',
-    renderCell: ({ row }: CellType) => {
-      const { fullName, username } = row;
-
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(row)}
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <LinkStyled href='/apps/user/view/overview/'>{fullName}</LinkStyled>
-            <Typography noWrap variant='caption'>
-              {`@${username}`}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    }
-  },
-  {
-    flex: 0.2,
-    minWidth: 250,
-    field: 'email',
-    headerName: 'Email',
+    field: 'códigoDeEnvío',
+    headerName: 'Código de envío',
     renderCell: ({ row }: CellType) => {
       return (
-        <Typography noWrap variant='body2'>
-          {row.email}
-        </Typography>
-      );
-    }
-  },
-  {
-    flex: 0.15,
-    field: 'role',
-    minWidth: 150,
-    headerName: 'Role',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { mr: 3, color: userRoleObj[row.role].color } }}>
-          <Icon icon={userRoleObj[row.role].icon} fontSize={20} />
-          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.role}
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+          <Typography noWrap variant='caption'>
+            {`${row.coreData.id}`}
           </Typography>
         </Box>
       );
@@ -221,13 +139,41 @@ const columns: GridColDef[] = [
   },
   {
     flex: 0.15,
+    field: 'vendedeor',
+    minWidth: 150,
+    headerName: 'Vendedor',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {row.coreData.seller}
+          </Typography>
+        </Box>
+      );
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'dirección',
+    headerName: 'Dirección',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.address}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.15,
     minWidth: 120,
-    headerName: 'Plan',
-    field: 'currentPlan',
+    headerName: 'código Postal',
+    field: 'Código Postal',
     renderCell: ({ row }: CellType) => {
       return (
         <Typography variant='subtitle1' noWrap sx={{ textTransform: 'capitalize' }}>
-          {row.currentPlan}
+          {row.coreData.zipCode}
         </Typography>
       );
     }
@@ -235,15 +181,15 @@ const columns: GridColDef[] = [
   {
     flex: 0.1,
     minWidth: 110,
-    field: 'status',
-    headerName: 'Status',
+    field: 'envío',
+    headerName: 'Envío',
     renderCell: ({ row }: CellType) => {
       return (
         <CustomChip
           skin='light'
           size='small'
-          label={row.status}
-          color={userStatusObj[row.status]}
+          label={row.coreData.deliveryPreferences}
+          color={userStatusObj[row.coreData.deliveryPreferences] || 'warning'}
           sx={{ textTransform: 'capitalize', '& .MuiChip-label': { lineHeight: '18px' } }}
         />
       );
@@ -269,7 +215,7 @@ const ShipmentsDashboard = () => {
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>();
-  const store = useSelector((state: RootState) => state.user);
+  const store = useSelector((state: RootState) => state.shipment);
 
   useEffect(() => {
     dispatch(
@@ -388,6 +334,17 @@ const ShipmentsDashboard = () => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const res = await axios.get('/cards/statistics');
+
+  // try {
+  //   const tres = await fetch('http://localhost:3001/shipments', {
+  //     headers: { 'Content-Type': 'application/json' },
+  //     method: 'GET',
+  //   });
+  //   const obj = await tres.json();
+  //   console.log(obj);
+  // } catch (err) {
+  //   console.log(err);
+  // }
   const apiData: CardStatsType = res.data;
 
   return {
