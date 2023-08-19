@@ -44,6 +44,7 @@ import { ThemeColor } from 'src/@core/layouts/types';
 // ** Custom Table Components Imports
 import TableHeader from 'src/views/dashboards/shipments/filter/TableHeader';
 import { ResponseShipment, fetchData } from 'src/store/apps/shipments';
+import { connectToServer } from 'src/libs';
 
 interface UserStatusType {
   [key: string]: ThemeColor;
@@ -124,7 +125,7 @@ const RowOptions = ({ id }: { id: number | string; }) => {
 const columns: GridColDef[] = [
   {
     flex: 0.2,
-    minWidth: 230,
+    maxWidth: 140,
     field: 'códigoDeEnvío',
     headerName: 'Código de envío',
     renderCell: ({ row }: CellType) => {
@@ -132,6 +133,47 @@ const columns: GridColDef[] = [
         <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
           <Typography noWrap variant='caption'>
             {`${row.coreData.id}`}
+          </Typography>
+        </Box>
+      );
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'Destino',
+    headerName: 'Destino',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.address}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.15,
+    maxWidth: 100,
+    headerName: 'CP',
+    field: 'CP',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography variant='subtitle1' noWrap sx={{ textTransform: 'capitalize' }}>
+          {row.coreData.zipCode}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.15,
+    field: 'comprador',
+    minWidth: 150,
+    headerName: 'Comprador',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {row.coreData.buyer}
           </Typography>
         </Box>
       );
@@ -153,28 +195,17 @@ const columns: GridColDef[] = [
     }
   },
   {
-    flex: 0.2,
-    minWidth: 250,
-    field: 'dirección',
-    headerName: 'Dirección',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Typography noWrap variant='body2'>
-          {row.coreData.address}
-        </Typography>
-      );
-    }
-  },
-  {
     flex: 0.15,
-    minWidth: 120,
-    headerName: 'código Postal',
-    field: 'Código Postal',
+    field: 'Origen',
+    minWidth: 150,
+    headerName: 'Origen',
     renderCell: ({ row }: CellType) => {
       return (
-        <Typography variant='subtitle1' noWrap sx={{ textTransform: 'capitalize' }}>
-          {row.coreData.zipCode}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {row.coreData.sellerAddress}
+          </Typography>
+        </Box>
       );
     }
   },
@@ -218,13 +249,13 @@ const ShipmentsDashboard = () => {
   const store = useSelector((state: RootState) => state.shipment);
 
   useEffect(() => {
+    connectToServer(dispatch);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     dispatch(
-      fetchData({
-        role,
-        status,
-        q: value,
-        currentPlan: plan
-      })
+      fetchData()
     );
   }, [dispatch, plan, role, status, value]);
 

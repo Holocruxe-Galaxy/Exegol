@@ -6,7 +6,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
   // ** Vars
   const whiteColor = '#FFF'
   const lightColor = '76, 78, 100'
-  const darkColor = '234, 234, 255'
+  const darkColor = '255, 255, 255'
   const mainColor = mode === 'light' ? lightColor : darkColor
 
   const defaultBgColor = () => {
@@ -16,7 +16,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       return '#30334E'
     } else if (mode === 'light') {
       return '#F7F7F9'
-    } else return '#282A42'
+    } else return '#ed8900'
   }
 
   return {
@@ -24,13 +24,13 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       dark: darkColor,
       main: mainColor,
       light: lightColor,
-      darkBg: '#282A42',
+      darkBg: '#ff9300',
       lightBg: '#F7F7F9',
-      bodyBg: mode === 'light' ? '#F7F7F9' : '#282A42', // Same as palette.background.default but doesn't consider bordered skin
-      trackBg: mode === 'light' ? '#F2F2F4' : '#41435C',
-      avatarBg: mode === 'light' ? '#F1F1F3' : '#3F425C',
-      tooltipBg: mode === 'light' ? '#262732' : '#464A65',
-      tableHeaderBg: mode === 'light' ? '#F5F5F7' : '#3A3E5B'
+      bodyBg: mode === 'light' ? '#F7F7F9' : '#ff9300', // Same as palette.background.default but doesn't consider bordered skin
+      trackBg: mode === 'light' ? '#F2F2F4' : '#ff9300',
+      avatarBg: mode === 'light' ? '#F1F1F3' : '#ff9300',
+      tooltipBg: mode === 'light' ? '#262732' : '#ff9300',
+      tableHeaderBg: mode === 'light' ? '#F5F5F7' : '#ff9300'
     },
     mode: mode,
     common: {
@@ -38,20 +38,20 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       white: whiteColor
     },
     primary: {
-      light: '#787EFF',
-      main: '#666CFF',
+      light: '#ffb959',
+      main: '#ee8200',
       dark: '#5A5FE0',
       contrastText: whiteColor
     },
     secondary: {
-      light: '#7F889B',
-      main: '#6D788D',
+      light: '#ffb959',
+      main: '#ffab37',
       dark: '#606A7C',
       contrastText: whiteColor
     },
     error: {
       light: '#FF625F',
-      main: '#FF4D49',
+      main: '#ffab37',
       dark: '#E04440',
       contrastText: whiteColor
     },
@@ -96,7 +96,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     },
     divider: `rgba(${mainColor}, 0.12)`,
     background: {
-      paper: mode === 'light' ? whiteColor : '#30334E',
+      paper: mode === 'light' ? whiteColor : '#f79f27',
       default: defaultBgColor()
     },
     action: {
