@@ -51,7 +51,7 @@ interface CellType {
 
 const userStatusObj: UserStatusType = {
   residential: 'success',
-  business: 'primary'
+  business: 'secondary'
 };
 
 const RowOptions = ({ id }: { id: number | string; }) => {

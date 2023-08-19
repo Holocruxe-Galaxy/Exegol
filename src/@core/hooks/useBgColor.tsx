@@ -1,19 +1,19 @@
 // ** MUI Imports
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles';
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba';
 
 export type UseBgColorType = {
   [key: string]: {
-    color: string
-    backgroundColor: string
-  }
-}
+    color: string;
+    backgroundColor: string;
+  };
+};
 
 const UseBgColor = () => {
   // ** Hooks
-  const theme = useTheme()
+  const theme = useTheme();
 
   return {
     primaryFilled: {
@@ -30,7 +30,7 @@ const UseBgColor = () => {
     },
     secondaryLight: {
       color: theme.palette.secondary.main,
-      backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.12)
+      backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.32)
     },
     successFilled: {
       color: theme.palette.success.contrastText,
@@ -38,7 +38,7 @@ const UseBgColor = () => {
     },
     successLight: {
       color: theme.palette.success.main,
-      backgroundColor: hexToRGBA(theme.palette.success.main, 0.12)
+      backgroundColor: hexToRGBA(theme.palette.success.main, 0.32)
     },
     errorFilled: {
       color: theme.palette.error.contrastText,
@@ -64,7 +64,7 @@ const UseBgColor = () => {
       color: theme.palette.info.main,
       backgroundColor: hexToRGBA(theme.palette.info.main, 0.12)
     }
-  }
-}
+  };
+};
 
-export default UseBgColor
+export default UseBgColor;
