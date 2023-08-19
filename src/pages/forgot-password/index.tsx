@@ -1,31 +1,28 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 // ** Next Import
-import Link from 'next/link'
+import Link from 'next/link';
 
 // ** MUI Components
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Box, { BoxProps } from '@mui/material/Box'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { styled, useTheme } from '@mui/material/styles'
-import Typography, { TypographyProps } from '@mui/material/Typography'
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box, { BoxProps } from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled, useTheme } from '@mui/material/styles';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from 'src/@core/components/icon';
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from 'src/configs/themeConfig';
 
 // ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
+import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Hooks
-import { useSettings } from 'src/@core/hooks/useSettings'
-
-// ** Demo Imports
-import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
+import { useSettings } from 'src/@core/hooks/useSettings';
 
 // Styled Components
 const ForgotPasswordIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -34,7 +31,7 @@ const ForgotPasswordIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => (
   [theme.breakpoints.down('lg')]: {
     padding: theme.spacing(10)
   }
-}))
+}));
 
 const ForgotPasswordIllustration = styled('img')(({ theme }) => ({
   maxWidth: '48rem',
@@ -44,7 +41,7 @@ const ForgotPasswordIllustration = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('lg')]: {
     maxWidth: '30rem'
   }
-}))
+}));
 
 const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -54,21 +51,21 @@ const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: 450
   }
-}))
+}));
 
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('md')]: {
     maxWidth: 400
   }
-}))
+}));
 
 const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 600,
   letterSpacing: '0.18px',
   marginBottom: theme.spacing(1.5),
   [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
-}))
+}));
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   display: 'flex',
@@ -77,19 +74,19 @@ const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   justifyContent: 'center',
   color: theme.palette.primary.main
-}))
+}));
 
 const ForgotPassword = () => {
   // ** Hooks
-  const theme = useTheme()
-  const { settings } = useSettings()
+  const theme = useTheme();
+  const { settings } = useSettings();
 
   // ** Vars
-  const { skin } = settings
-  const hidden = useMediaQuery(theme.breakpoints.down('md'))
+  const { skin } = settings;
+  const hidden = useMediaQuery(theme.breakpoints.down('md'));
 
   const imageSource =
-    skin === 'bordered' ? 'auth-v2-forgot-password-illustration-bordered' : 'auth-v2-forgot-password-illustration'
+    skin === 'bordered' ? 'auth-v2-forgot-password-illustration-bordered' : 'auth-v2-forgot-password-illustration';
 
   return (
     <Box className='content-right'>
@@ -101,7 +98,6 @@ const ForgotPassword = () => {
               src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}
             />
           </ForgotPasswordIllustrationWrapper>
-          <FooterIllustrationsV2 image={`/images/pages/auth-v2-forgot-password-mask-${theme.palette.mode}.png`} />
         </Box>
       ) : null}
       <RightWrapper sx={skin === 'bordered' && !hidden ? { borderLeft: `1px solid ${theme.palette.divider}` } : {}}>
@@ -222,10 +218,10 @@ const ForgotPassword = () => {
         </Box>
       </RightWrapper>
     </Box>
-  )
-}
+  );
+};
 
-ForgotPassword.guestGuard = true
-ForgotPassword.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+ForgotPassword.guestGuard = true;
+ForgotPassword.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
 
-export default ForgotPassword
+export default ForgotPassword;

@@ -23,11 +23,9 @@ const Authorize = () => {
   const searchParams = useSearchParams();
   const keyRef = useRef<HTMLInputElement>(null);
 
-  // const search = searchParams.get('code');
-
-  // useEffect(() => {
-  //   console.log('static props', search);
-  // }, [response]);
+  useEffect(() => {
+    console.log('static props', response);
+  }, [response]);
 
   const handleName = (e: any) => {
     if (keyRef?.current) keyRef.current.value = e.target.value;

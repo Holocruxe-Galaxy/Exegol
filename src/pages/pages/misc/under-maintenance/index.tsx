@@ -1,27 +1,24 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 // ** Next Import
-import Link from 'next/link'
+import Link from 'next/link';
 
 // ** MUI Components
-import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-import Box, { BoxProps } from '@mui/material/Box'
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Box, { BoxProps } from '@mui/material/Box';
 
 // ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
-
-// ** Demo Imports
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
+import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Styled Components
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '90vw'
   }
-}))
+}));
 
 const Img = styled('img')(({ theme }) => ({
   marginTop: theme.spacing(15),
@@ -34,7 +31,7 @@ const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     height: 400
   }
-}))
+}));
 
 const UnderMaintenance = () => {
   return (
@@ -53,11 +50,10 @@ const UnderMaintenance = () => {
           Back to Home
         </Button>
       </Box>
-      <FooterIllustrations image={`/images/pages/misc-under-maintenance-object.png`} />
     </Box>
-  )
-}
+  );
+};
 
-UnderMaintenance.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+UnderMaintenance.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
 
-export default UnderMaintenance
+export default UnderMaintenance;
