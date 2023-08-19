@@ -51,7 +51,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     },
     error: {
       light: '#FF625F',
-      main: '#ffab37',
+      main: mode === 'light' ? '#FF4D49' : '#df9473',
       dark: '#E04440',
       contrastText: whiteColor
     },

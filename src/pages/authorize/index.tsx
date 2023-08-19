@@ -1,5 +1,5 @@
 // ** React Imports
-import { FormEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { FormEvent, ReactNode, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // ** MUI Components
@@ -10,6 +10,7 @@ import { styled } from '@mui/material/styles';
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout';
+import { FormHelperText } from '@mui/material';
 
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -19,12 +20,13 @@ const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const Authorize = () => {
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState<any>();
+  const [error, setError] = useState<SetStateAction<string | null>>(null);
   const searchParams = useSearchParams();
   const keyRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log('static props', response);
+    if (response?.message) setError(response.message as string);
   }, [response]);
 
   const handleName = (e: any) => {
@@ -36,6 +38,8 @@ const Authorize = () => {
     const code = searchParams.get('code');
 
     if (!keyRef?.current?.value) return;
+    setResponse(null);
+    setError(null);
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACK}/admin/code`, {
       headers: {
         'Content-Type': 'application/json'
@@ -48,8 +52,6 @@ const Authorize = () => {
     });
 
     setResponse(await res.json());
-
-    // navigator.clipboard.writeText('hi');
   };
 
   return (
@@ -57,7 +59,8 @@ const Authorize = () => {
       <Box
         sx={{
           p: 7,
-          height: '100%',
+          width: '28rem',
+          height: '12rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -82,11 +85,21 @@ const Authorize = () => {
               onChange={(e) => handleName(e)}
               autoFocus
               fullWidth
-              sx={{ mb: 4 }}
+              sx={{ mb: !error ? 4 : 0 }}
               label='Ingrese su clave'
               placeholder='Clave'
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+            {error && (
+              <FormHelperText sx={{ color: 'error.main', mb: 2 }} id='validation-basic-textarea'>
+                {error as string}
+              </FormHelperText>
+            )}
+            {!error && response && (
+              <FormHelperText sx={{ color: 'success.main', mb: 2 }} id='validation-basic-textarea'>
+                Todo listo. ¡Muchas gracias!
+              </FormHelperText>
+            )}
+            <Button disabled={!error && response} fullWidth size='large' type='submit' variant='contained' >
               Autorizar
             </Button>
           </form>
