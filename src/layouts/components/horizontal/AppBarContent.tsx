@@ -1,26 +1,26 @@
 // ** MUI Imports
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from 'src/@core/context/settingsContext';
 
 // ** Components
-import Autocomplete from 'src/layouts/components/Autocomplete'
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import LanguageDropdown from 'src/@core/layouts/components/shared-components/LanguageDropdown'
+import Autocomplete from 'src/layouts/components/Autocomplete';
+import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler';
+import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown';
+import LanguageDropdown from 'src/@core/layouts/components/shared-components/LanguageDropdown';
 import NotificationDropdown, {
   NotificationsType
-} from 'src/@core/layouts/components/shared-components/NotificationDropdown'
-import ShortcutsDropdown, { ShortcutsType } from 'src/@core/layouts/components/shared-components/ShortcutsDropdown'
+} from 'src/@core/layouts/components/shared-components/NotificationDropdown';
+import ShortcutsDropdown, { ShortcutsType } from 'src/@core/layouts/components/shared-components/ShortcutsDropdown';
 
 // ** Hook Import
-import { useAuth } from 'src/hooks/useAuth'
+import { useAuth } from 'src/hooks/useAuth';
 
 interface Props {
-  hidden: boolean
-  settings: Settings
-  saveSettings: (values: Settings) => void
+  hidden: boolean;
+  settings: Settings;
+  saveSettings: (values: Settings) => void;
 }
 
 const notifications: NotificationsType[] = [
@@ -66,7 +66,7 @@ const notifications: NotificationsType[] = [
     avatarImg: '/images/misc/chart.png',
     title: 'Finance report has been generated'
   }
-]
+];
 
 const shortcuts: ShortcutsType[] = [
   {
@@ -117,14 +117,14 @@ const shortcuts: ShortcutsType[] = [
     icon: 'mdi:window-maximize',
     url: '/pages/dialog-examples'
   }
-]
+];
 
 const AppBarContent = (props: Props) => {
   // ** Props
-  const { hidden, settings, saveSettings } = props
+  const { hidden, settings, saveSettings } = props;
 
   // ** Hook
-  const auth = useAuth()
+  const auth = useAuth();
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -135,11 +135,11 @@ const AppBarContent = (props: Props) => {
         <>
           <ShortcutsDropdown settings={settings} shortcuts={shortcuts} />
           <NotificationDropdown settings={settings} notifications={notifications} />
-          <UserDropdown settings={settings} />
+          <UserDropdown />
         </>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default AppBarContent
+export default AppBarContent;

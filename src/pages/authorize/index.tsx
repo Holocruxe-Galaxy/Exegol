@@ -1,5 +1,5 @@
 // ** React Imports
-import { FormEvent, MutableRefObject, ReactNode, useEffect, useRef, useState } from 'react';
+import { FormEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // ** MUI Components
