@@ -4,20 +4,15 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      title: 'Dashboards',
+      title: 'Envíos',
       icon: 'mdi:home-outline',
-      badgeColor: 'error',
-      children: [
-        {
-          title: 'Envíos',
-          path: '/dashboards/shipments'
-        },
-        {
-          title: 'Generar permisos',
-          path: '/dashboards/generate-urls'
-        }
-      ]
+      path: '/dashboards/shipments'
     },
+    {
+      title: 'Generar permisos',
+      icon: 'mdi:file-document-outline',
+      path: '/dashboards/generate-urls'
+    }
   ]
 }
 
