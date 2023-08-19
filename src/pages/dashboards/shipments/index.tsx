@@ -3,7 +3,6 @@ import { useState, useEffect, MouseEvent, useCallback } from 'react';
 
 // ** Next Imports
 import Link from 'next/link';
-import { GetStaticProps } from 'next/types';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
@@ -33,12 +32,8 @@ import CustomChip from 'src/@core/components/mui/chip';
 // ** Actions Imports
 import { deleteUser } from 'src/store/apps/user';
 
-// ** Third Party Components
-import axios from 'axios';
-
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store';
-import { CardStatsType } from 'src/@fake-db/types';
 import { ThemeColor } from 'src/@core/layouts/types';
 
 // ** Custom Table Components Imports
@@ -361,28 +356,6 @@ const ShipmentsDashboard = () => {
       </Grid>
     </Grid>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await axios.get('/cards/statistics');
-
-  // try {
-  //   const tres = await fetch('http://localhost:3001/shipments', {
-  //     headers: { 'Content-Type': 'application/json' },
-  //     method: 'GET',
-  //   });
-  //   const obj = await tres.json();
-  //   console.log(obj);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  const apiData: CardStatsType = res.data;
-
-  return {
-    props: {
-      apiData
-    }
-  };
 };
 
 export default ShipmentsDashboard;
