@@ -1,34 +1,32 @@
 // ** MUI Imports
-import Fab from '@mui/material/Fab'
-import AppBar from '@mui/material/AppBar'
-import { styled } from '@mui/material/styles'
-import Box, { BoxProps } from '@mui/material/Box'
-import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
+import Fab from '@mui/material/Fab';
+import AppBar from '@mui/material/AppBar';
+import { styled } from '@mui/material/styles';
+import Box, { BoxProps } from '@mui/material/Box';
+import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar';
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from 'src/@core/components/icon';
 
 // ** Theme Config Import
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from 'src/configs/themeConfig';
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from 'src/@core/layouts/types';
 
-// ** Components
-import Customizer from 'src/@core/components/customizer'
-import Footer from './components/shared-components/footer'
-import Navigation from './components/horizontal/navigation'
-import ScrollToTop from 'src/@core/components/scroll-to-top'
-import AppBarContent from './components/horizontal/app-bar-content'
+import Footer from './components/shared-components/footer';
+import Navigation from './components/horizontal/navigation';
+import ScrollToTop from 'src/@core/components/scroll-to-top';
+import AppBarContent from './components/horizontal/app-bar-content';
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba';
 
 const HorizontalLayoutWrapper = styled('div')({
   height: '100%',
   display: 'flex',
   ...(themeConfig.horizontalMenuAnimation && { overflow: 'clip' })
-})
+});
 
 const MainContentWrapper = styled(Box)<BoxProps>({
   flexGrow: 1,
@@ -36,7 +34,7 @@ const MainContentWrapper = styled(Box)<BoxProps>({
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column'
-})
+});
 
 const Toolbar = styled(MuiToolbar)<ToolbarProps>(({ theme }) => ({
   width: '100%',
@@ -49,7 +47,7 @@ const Toolbar = styled(MuiToolbar)<ToolbarProps>(({ theme }) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2)
   }
-}))
+}));
 
 const ContentWrapper = styled('main')(({ theme }) => ({
   flexGrow: 1,
@@ -60,7 +58,7 @@ const ContentWrapper = styled('main')(({ theme }) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
   }
-}))
+}));
 
 const HorizontalLayout = (props: LayoutProps) => {
   // ** Props
@@ -73,19 +71,19 @@ const HorizontalLayout = (props: LayoutProps) => {
     saveSettings,
     contentHeightFixed,
     horizontalLayoutProps
-  } = props
+  } = props;
 
   // ** Vars
-  const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings
-  const appBarProps = horizontalLayoutProps?.appBar?.componentProps
-  const userNavMenuContent = horizontalLayoutProps?.navMenu?.content
+  const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings;
+  const appBarProps = horizontalLayoutProps?.appBar?.componentProps;
+  const userNavMenuContent = horizontalLayoutProps?.navMenu?.content;
 
-  let userAppBarStyle = {}
+  let userAppBarStyle = {};
   if (appBarProps && appBarProps.sx) {
-    userAppBarStyle = appBarProps.sx
+    userAppBarStyle = appBarProps.sx;
   }
-  const userAppBarProps = Object.assign({}, appBarProps)
-  delete userAppBarProps.sx
+  const userAppBarProps = Object.assign({}, appBarProps);
+  delete userAppBarProps.sx;
 
   return (
     <HorizontalLayoutWrapper className='layout-wrapper'>
@@ -106,9 +104,9 @@ const HorizontalLayout = (props: LayoutProps) => {
             transition: 'border-bottom 0.2s ease-in-out, backdrop-filter .25s ease-in-out, box-shadow .25s ease-in-out',
             ...(appBar === 'fixed'
               ? appBarBlur && {
-                  backdropFilter: 'blur(8px)',
-                  backgroundColor: theme => hexToRGBA(theme.palette.background.paper, 0.9)
-                }
+                backdropFilter: 'blur(8px)',
+                backgroundColor: theme => hexToRGBA(theme.palette.background.paper, 0.9)
+              }
               : {}),
             ...userAppBarStyle
           }}
@@ -184,9 +182,6 @@ const HorizontalLayout = (props: LayoutProps) => {
         {/* Footer */}
         <Footer {...props} footerStyles={footerProps?.sx} footerContent={footerProps?.content} />
 
-        {/* Customizer */}
-        {themeConfig.disableCustomizer || hidden ? null : <Customizer />}
-
         {/* Scroll to top button */}
         {scrollToTop ? (
           scrollToTop(props)
@@ -199,7 +194,7 @@ const HorizontalLayout = (props: LayoutProps) => {
         )}
       </MainContentWrapper>
     </HorizontalLayoutWrapper>
-  )
-}
+  );
+};
 
-export default HorizontalLayout
+export default HorizontalLayout;
