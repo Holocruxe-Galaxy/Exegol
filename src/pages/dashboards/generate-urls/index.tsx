@@ -19,6 +19,7 @@ import { RootState, AppDispatch } from 'src/store';
 
 // ** Custom Table Components Imports
 import { UrlWithId, fetchData } from 'src/store/apps/urls';
+import { Button } from '@mui/material';
 
 interface CellType {
   row: UrlWithId;
@@ -85,11 +86,30 @@ const ShipmentsDashboard = () => {
     );
   }, [dispatch]);
 
+  const onClick = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_BACK}/admin`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    });
+    dispatch(fetchData());
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title='URLs de autorización' sx={{ pb: 4, '& .MuiCardHeader-title': { letterSpacing: '.15px' } }} />
+          <Button
+            onClick={onClick}
+            sx={{
+              marginLeft: 4,
+              backgroundColor: 'primary.main',
+              color: '#FFF',
+              mb: 2
+            }}
+          >Generar URL</Button>
           <DataGrid
             autoHeight
             rows={store.data}
