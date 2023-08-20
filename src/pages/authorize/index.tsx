@@ -51,7 +51,7 @@ const Authorize = () => {
       })
     });
 
-    setResponse(await res.json());
+    res.ok ? setResponse(true) : setResponse(await res.json());
   };
 
   return (
