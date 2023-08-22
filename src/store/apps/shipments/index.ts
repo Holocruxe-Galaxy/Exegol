@@ -1,21 +1,5 @@
 // ** Redux Imports
-// import { Dispatch } from 'redux'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
-// ** Axios Imports
-// import axios from 'axios'
-
-// interface DataParams {
-//   q: string
-//   role: string
-//   status: string
-//   currentPlan: string
-// }
-
-// interface Redux {
-//   getState: any
-//   dispatch: Dispatch<any>
-// }
 
 interface Shipment {
   _id: string
@@ -66,33 +50,6 @@ export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
     console.log(err);
   }
 })
-
-// ** Add User
-// export const addUser = createAsyncThunk(
-//   'appShipment/addUser',
-//   async (data: { [key: string]: number | string }, { getState, dispatch }: Redux) => {
-//     const response = await axios.post('/apps/users/add-user', {
-//       data
-//     })
-//     getState
-//     dispatch(fetchData())
-
-//     return response.data
-//   }
-// )
-
-// ** Delete User
-// export const deleteUser = createAsyncThunk(
-//   'appShipment/deleteUser',
-//   async (id: number | string, { getState, dispatch }: Redux) => {
-//     const response = await axios.delete('/apps/users/delete', {
-//       data: id
-//     })
-//     dispatch(fetchData(getState().user.params))
-
-//     return response.data
-//   }
-// )
 
 export const appShipmentsSlice = createSlice({
   name: 'appShipment',

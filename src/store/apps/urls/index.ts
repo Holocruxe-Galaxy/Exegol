@@ -11,7 +11,7 @@ export type UrlWithId = Url & { id: string }
 // ** Fetch Users
 export const fetchData = createAsyncThunk('appUrl/fetchData', async () => {
   try {
-    // const response = await fetch('https://serenno-production.up.railway.app/admin/all', {
+    console.log(process.env.NEXT_PUBLIC_BACK)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACK}/admin/all`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET',
