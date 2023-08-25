@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, useCallback } from 'react';
+import { MouseEvent, useState, useEffect, useCallback } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
@@ -213,7 +213,8 @@ const ShipmentsDashboard = () => {
     setSeller(e.target.value);
   }, []);
 
-  const handleSelection = () => {
+  const onClick = (e: MouseEvent) => {
+    e.preventDefault();
     const selectedRows = apiRef.current.getSelectedRows();
     const toExport: CoreData[] = [];
 
@@ -299,7 +300,7 @@ const ShipmentsDashboard = () => {
           }} >
             <TableHeader value={value} handleFilter={handleFilter} />
             <Button
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => onClick(e)}
               sx={{
                 marginLeft: 4,
                 backgroundColor: 'primary.main',
@@ -314,7 +315,6 @@ const ShipmentsDashboard = () => {
             columns={columns}
             apiRef={apiRef}
             checkboxSelection
-            onRowSelectionModelChange={handleSelection}
             disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
