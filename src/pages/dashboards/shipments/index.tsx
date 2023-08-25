@@ -13,7 +13,7 @@ import CardHeader from '@mui/material/CardHeader';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import CardContent from '@mui/material/CardContent';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 // ** Store Imports
@@ -29,9 +29,10 @@ import { ThemeColor } from 'src/@core/layouts/types';
 // ** Custom Table Components Imports
 import TableHeader from 'src/views/dashboards/shipments/filter/TableHeader';
 
-import { connectToServer } from 'src/libs';
+import { connectToServer } from 'src/libs/socket.io';
 
-import { ResponseShipment, fetchData, filterData } from 'src/store/apps/shipments';
+import { CoreData, ResponseShipment, fetchData, filterData } from 'src/store/apps/shipments';
+import { fileExporter } from 'src/libs/xlsx/xlsx';
 
 
 interface UserStatusType {
@@ -167,6 +168,7 @@ const ShipmentsDashboard = () => {
   const [value, setValue] = useState<string>('');
   const [seller, setSeller] = useState<string>('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const apiRef = useGridApiRef();
 
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>();
@@ -210,6 +212,18 @@ const ShipmentsDashboard = () => {
   const handleSellerChange = useCallback((e: SelectChangeEvent) => {
     setSeller(e.target.value);
   }, []);
+
+  const handleSelection = () => {
+    const selectedRows = apiRef.current.getSelectedRows();
+    const toExport: CoreData[] = [];
+
+    selectedRows.forEach((row) => toExport.push(row.coreData));
+    if (!toExport.length) return;
+
+    const formattedData = fileExporter.formatData(toExport);
+
+    fileExporter.export(formattedData);
+  };
 
   return (
     <Grid container spacing={6}>
@@ -298,7 +312,9 @@ const ShipmentsDashboard = () => {
             autoHeight
             rows={store.data}
             columns={columns}
+            apiRef={apiRef}
             checkboxSelection
+            onRowSelectionModelChange={handleSelection}
             disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
