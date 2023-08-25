@@ -73,7 +73,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-const ShipmentsDashboard = () => {
+const UrlsDashboard = () => {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   // ** Hooks
@@ -126,4 +126,4 @@ const ShipmentsDashboard = () => {
   );
 };
 
-export default ShipmentsDashboard;
+export default UrlsDashboard;
