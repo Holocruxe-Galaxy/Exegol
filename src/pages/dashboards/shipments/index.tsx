@@ -1,17 +1,13 @@
 // ** React Imports
-import { useState, useEffect, MouseEvent, useCallback } from 'react';
-
-// ** Next Imports
-import Link from 'next/link';
+import { useState, useEffect, useCallback } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Menu from '@mui/material/Menu';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 import InputLabel from '@mui/material/InputLabel';
@@ -20,17 +16,11 @@ import CardContent from '@mui/material/CardContent';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-// ** Icon Imports
-import Icon from 'src/@core/components/icon';
-
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux';
 
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip';
-
-// ** Actions Imports
-import { deleteUser } from 'src/store/apps/user';
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store';
@@ -38,8 +28,11 @@ import { ThemeColor } from 'src/@core/layouts/types';
 
 // ** Custom Table Components Imports
 import TableHeader from 'src/views/dashboards/shipments/filter/TableHeader';
-import { ResponseShipment, fetchData, filterData } from 'src/store/apps/shipments';
+
 import { connectToServer } from 'src/libs';
+
+import { ResponseShipment, fetchData, filterData } from 'src/store/apps/shipments';
+
 
 interface UserStatusType {
   [key: string]: ThemeColor;
@@ -54,74 +47,12 @@ const userStatusObj: UserStatusType = {
   business: 'secondary'
 };
 
-const RowOptions = ({ id }: { id: number | string; }) => {
-  // ** Hooks
-  const dispatch = useDispatch<AppDispatch>();
-
-  // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const rowOptionsOpen = Boolean(anchorEl);
-
-  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleDelete = () => {
-    dispatch(deleteUser(id));
-    handleRowOptionsClose();
-  };
-
-  return (
-    <>
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <Icon icon='mdi:dots-vertical' />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        <MenuItem
-          component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          onClick={handleRowOptionsClose}
-          href='/apps/user/view/overview/'
-        >
-          <Icon icon='mdi:eye-outline' fontSize={20} />
-          View
-        </MenuItem>
-        <MenuItem onClick={handleRowOptionsClose} sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='mdi:pencil-outline' fontSize={20} />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='mdi:delete-outline' fontSize={20} />
-          Delete
-        </MenuItem>
-      </Menu>
-    </>
-  );
-};
-
 const columns: GridColDef[] = [
   {
     flex: 0.2,
-    maxWidth: 140,
+    maxWidth: 160,
     field: 'códigoDeEnvío',
+    sortable: false,
     headerName: 'Código de envío',
     renderCell: ({ row }: CellType) => {
       return (
@@ -137,6 +68,7 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 250,
     field: 'Destino',
+    sortable: false,
     headerName: 'Destino',
     renderCell: ({ row }: CellType) => {
       return (
@@ -149,8 +81,9 @@ const columns: GridColDef[] = [
   {
     flex: 0.15,
     maxWidth: 100,
-    headerName: 'CP',
-    field: 'CP',
+    headerName: 'Zip',
+    field: 'Zip',
+    sortable: false,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography variant='subtitle1' noWrap sx={{ textTransform: 'capitalize' }}>
@@ -164,6 +97,7 @@ const columns: GridColDef[] = [
     field: 'comprador',
     minWidth: 150,
     headerName: 'Comprador',
+    sortable: false,
     renderCell: ({ row }: CellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -177,6 +111,7 @@ const columns: GridColDef[] = [
   {
     flex: 0.15,
     field: 'vendedeor',
+    sortable: false,
     minWidth: 150,
     headerName: 'Vendedor',
     renderCell: ({ row }: CellType) => {
@@ -192,6 +127,7 @@ const columns: GridColDef[] = [
   {
     flex: 0.15,
     field: 'Origen',
+    sortable: false,
     minWidth: 150,
     headerName: 'Origen',
     renderCell: ({ row }: CellType) => {
@@ -208,6 +144,7 @@ const columns: GridColDef[] = [
     flex: 0.1,
     minWidth: 110,
     field: 'envío',
+    sortable: false,
     headerName: 'Envío',
     renderCell: ({ row }: CellType) => {
       return (
@@ -220,14 +157,6 @@ const columns: GridColDef[] = [
         />
       );
     }
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Actions',
-    renderCell: ({ row }: CellType) => <RowOptions id={row.id} />
   }
 ];
 
@@ -348,12 +277,29 @@ const ShipmentsDashboard = () => {
             </Grid>
           </CardContent>
           <Divider />
-          <TableHeader value={value} handleFilter={handleFilter} />
+          <Grid sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginRight: 8
+          }} >
+            <TableHeader value={value} handleFilter={handleFilter} />
+            <Button
+              onClick={(e) => e.preventDefault()}
+              sx={{
+                marginLeft: 4,
+                backgroundColor: 'primary.main',
+                color: '#FFF',
+                mb: 2
+              }}
+            >Exportar</Button>
+          </Grid>
           <DataGrid
             autoHeight
             rows={store.data}
             columns={columns}
             checkboxSelection
+            disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
             paginationModel={paginationModel}

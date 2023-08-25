@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -19,7 +20,6 @@ import { RootState, AppDispatch } from 'src/store';
 
 // ** Custom Table Components Imports
 import { UrlWithId, fetchData } from 'src/store/apps/urls';
-import { Button } from '@mui/material';
 
 interface CellType {
   row: UrlWithId;
@@ -37,6 +37,7 @@ const columns: GridColDef[] = [
     maxWidth: 90,
     sortable: false,
     field: 'copiar',
+    hideable: false,
     headerName: 'Copiar',
     renderCell: (cell: CellType) => (
       <IconButton onClick={() => onClick(cell)} sx={{ marginRight: 2 }}>
@@ -47,6 +48,7 @@ const columns: GridColDef[] = [
     flex: 0.2,
     maxWidth: 140,
     field: 'clave',
+    sortable: false,
     headerName: 'Clave',
     renderCell: ({ row }: CellType) => {
       return (
@@ -62,6 +64,7 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 250,
     field: 'url',
+    sortable: false,
     headerName: 'URL',
     renderCell: ({ row }: CellType) => {
       return (
@@ -114,6 +117,7 @@ const UrlsDashboard = () => {
             autoHeight
             rows={store.data}
             columns={columns}
+            disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
             paginationModel={paginationModel}
