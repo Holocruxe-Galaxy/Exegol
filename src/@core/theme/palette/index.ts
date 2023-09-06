@@ -17,8 +17,8 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     } else if (mode === 'light') {
     //   return '#ff9300'
     // } else return '#ed8900'
-    return '#FFF'
-    } else return '#000'
+    return '#EEEEEE'
+    } else return '#2B2B2B'
   }
 
   return {

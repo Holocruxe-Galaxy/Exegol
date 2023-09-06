@@ -51,7 +51,8 @@ const userStatusObj: UserStatusType = {
 const columns: GridColDef[] = [
   {
     flex: 0.2,
-    maxWidth: 160,
+    minWidth: 150,
+    maxWidth: 150,
     field: 'códigoDeEnvío',
     sortable: false,
     headerName: 'Código de envío',
@@ -80,6 +81,20 @@ const columns: GridColDef[] = [
     }
   },
   {
+    flex: 0.2,
+    maxWidth: 100,
+    field: 'FechaDeEnvío',
+    sortable: false,
+    headerName: 'Fecha de envío',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.deliveryTime || 'No establecida'}
+        </Typography>
+      );
+    }
+  },
+  {
     flex: 0.15,
     maxWidth: 100,
     headerName: 'Zip',
@@ -87,7 +102,7 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: ({ row }: CellType) => {
       return (
-        <Typography variant='subtitle1' noWrap sx={{ textTransform: 'capitalize' }}>
+        <Typography noWrap variant='body2'>
           {row.coreData.zipCode}
         </Typography>
       );
