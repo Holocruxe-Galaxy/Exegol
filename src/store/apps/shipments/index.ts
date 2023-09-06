@@ -20,6 +20,7 @@ export interface CoreData {
   seller: string
   sellerAddress: string
   deliveryPreferences: string
+  deliveryTime?: string
 }
 
 interface AddressSelects {
@@ -52,7 +53,6 @@ return { sellerAddress, seller }
 // ** Fetch Users
 export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
   try {
-    // const response = await fetch('https://serenno-production.up.railway.app/shipments', {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACK}/shipments`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'GET',
