@@ -86,19 +86,18 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
   const queryLowered = q.toLowerCase();
 
   const filteredData = allData.filter(
-    ({ coreData }) =>
-      (
-        coreData.address.toLowerCase().includes(queryLowered) ||
-        coreData.buyer.toLowerCase().includes(queryLowered) ||
-        coreData.seller.toLowerCase().includes(queryLowered) ||
-        coreData.deliveryPreferences.toLowerCase().includes(queryLowered)
-      ) &&
+    ({ coreData }) => (
+      coreData.seller.toLowerCase().includes(queryLowered) ||
+      coreData.address.toLowerCase().includes(queryLowered) ||
+      coreData.deliveryPreferences.toLowerCase().includes(queryLowered) ||
+      (coreData.deliveryTime && coreData.deliveryTime.toLowerCase().includes(queryLowered))
+    ) &&
       coreData.deliveryPreferences === (deliveryPreferences || coreData.deliveryPreferences) &&
       coreData.sellerAddress === (sellerAddress || coreData.sellerAddress) &&
       coreData.seller === (seller || coreData.seller)
   )
-
-  return filteredData as Shipment[]
+  
+return filteredData as Shipment[]
 })
 
 export const appShipmentsSlice = createSlice({
