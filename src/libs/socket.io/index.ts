@@ -4,14 +4,7 @@ import { fetchData } from "src/store/apps/shipments";
 let socket: Socket
 
 export const connectToServer = (dispatch: any) => {
-  const manager = new Manager('https://serenno-production.up.railway.app/socket.io/socket.io.js',
-
-  // {
-  //   extraHeaders: {
-  //     authorization: 'holaaaasa'
-  //   }
-  // }
-  );
+  const manager = new Manager('https://serenno-production.up.railway.app/socket.io/socket.io.js');
 
   socket?.removeAllListeners();
   socket = manager.socket('/');

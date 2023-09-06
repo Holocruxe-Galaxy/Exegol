@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -36,6 +37,7 @@ const columns: GridColDef[] = [
     maxWidth: 90,
     sortable: false,
     field: 'copiar',
+    hideable: false,
     headerName: 'Copiar',
     renderCell: (cell: CellType) => (
       <IconButton onClick={() => onClick(cell)} sx={{ marginRight: 2 }}>
@@ -46,6 +48,7 @@ const columns: GridColDef[] = [
     flex: 0.2,
     maxWidth: 140,
     field: 'clave',
+    sortable: false,
     headerName: 'Clave',
     renderCell: ({ row }: CellType) => {
       return (
@@ -61,6 +64,7 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 250,
     field: 'url',
+    sortable: false,
     headerName: 'URL',
     renderCell: ({ row }: CellType) => {
       return (
@@ -72,7 +76,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-const ShipmentsDashboard = () => {
+const UrlsDashboard = () => {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   // ** Hooks
@@ -85,15 +89,35 @@ const ShipmentsDashboard = () => {
     );
   }, [dispatch]);
 
+  const onClick = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_BACK}/admin`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    });
+    dispatch(fetchData());
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title='URLs de autorización' sx={{ pb: 4, '& .MuiCardHeader-title': { letterSpacing: '.15px' } }} />
+          <Button
+            onClick={onClick}
+            sx={{
+              marginLeft: 4,
+              backgroundColor: 'primary.main',
+              color: '#FFF',
+              mb: 2
+            }}
+          >Generar URL</Button>
           <DataGrid
             autoHeight
             rows={store.data}
             columns={columns}
+            disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
             paginationModel={paginationModel}
@@ -106,4 +130,4 @@ const ShipmentsDashboard = () => {
   );
 };
 
-export default ShipmentsDashboard;
+export default UrlsDashboard;
