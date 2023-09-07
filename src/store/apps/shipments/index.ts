@@ -97,7 +97,7 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
       coreData.seller === (seller || coreData.seller)
   )
   
-return filteredData as Shipment[]
+  return filteredData as Shipment[]
 })
 
 export const appShipmentsSlice = createSlice({

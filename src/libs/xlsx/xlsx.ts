@@ -16,7 +16,8 @@ const translatedFields: TranslatedFields = {
   seller: 'Vendedor',
   sellerAddress: 'Origen',
   zipCode: 'Zip',
-  deliveryPreferences: 'Tipo de envío'
+  deliveryPreferences: 'Tipo de envío',
+  deliveryTime: 'Fecha estimada de envío'
 } 
 
 class FileExporter {
