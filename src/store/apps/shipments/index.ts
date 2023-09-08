@@ -25,6 +25,7 @@ export interface CoreData {
 
 interface AddressSelects {
   seller: string[]
+  deliveryTime: string[]
   sellerAddress: string[]
 }
 
@@ -38,16 +39,20 @@ interface ShipmentReducer {
 
 function populateAddressStates(data: Shipment[]): AddressSelects  {
   const sellerAddress: string[] = [];
+  const deliveryTime: string[] = [];
   const seller: string[] = [];
 
   data.map(({ coreData }) => {
     if(coreData.sellerAddress) {
       sellerAddress.includes(coreData.sellerAddress) || sellerAddress.push(coreData.sellerAddress)
     }
+    if(coreData.deliveryTime) {
+      deliveryTime.includes(coreData.deliveryTime) || deliveryTime.push(coreData.deliveryTime)
+    }
       seller.includes(coreData.seller) || seller.push(coreData.seller)
   })
   
-return { sellerAddress, seller }
+return { sellerAddress, seller, deliveryTime }
 }
 
 // ** Fetch Users
@@ -82,8 +87,9 @@ export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
 export const filterData = createAsyncThunk('appShipment/filterData', async (
   { allData, params }: Pick<ShipmentReducer, 'allData' | 'params'>
 ) => {
-  const { q = '', deliveryPreferences = null, seller = null, sellerAddress = null } = params ?? ''
+  const { q = '', deliveryPreferences = null, deliveryTime = null, seller = null, sellerAddress = null } = params ?? ''
   const queryLowered = q.toLowerCase();
+  console.log(deliveryTime)
 
   const filteredData = allData.filter(
     ({ coreData }) => (
@@ -93,6 +99,7 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
       coreData.deliveryPreferences.toLowerCase().includes(queryLowered) ||
       (coreData.deliveryTime && coreData.deliveryTime.toLowerCase().includes(queryLowered))
     ) &&
+      coreData.deliveryTime === (deliveryTime || coreData.deliveryTime) &&
       coreData.deliveryPreferences === (deliveryPreferences || coreData.deliveryPreferences) &&
       coreData.sellerAddress === (sellerAddress || coreData.sellerAddress) &&
       coreData.seller === (seller || coreData.seller)

@@ -180,6 +180,7 @@ const ShipmentsDashboard = () => {
   // ** State
   const [deliveryPreferences, setDeliveryPreferences] = useState<string>('');
   const [sellerAddress, setSellerAddress] = useState<string>('');
+  const [deliveryTime, setDeliveryTime] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [seller, setSeller] = useState<string>('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
@@ -203,6 +204,7 @@ const ShipmentsDashboard = () => {
       allData: store.allData,
       params: {
         deliveryPreferences,
+        deliveryTime,
         seller,
         q: value,
         sellerAddress
@@ -210,7 +212,7 @@ const ShipmentsDashboard = () => {
     }));
 
     // eslint-disable-next-line
-  }, [dispatch, sellerAddress, deliveryPreferences, seller, value]);
+  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, seller, value]);
 
   const handleFilter = useCallback((val: string) => {
     setValue(val);
@@ -218,6 +220,10 @@ const ShipmentsDashboard = () => {
 
   const handleDeliveryPreferenceChange = useCallback((e: SelectChangeEvent) => {
     setDeliveryPreferences(e.target.value);
+  }, []);
+
+  const handleDeliveryTimeChange = useCallback((e: SelectChangeEvent) => {
+    setDeliveryTime(e.target.value);
   }, []);
 
   const handleAddressChange = useCallback((e: SelectChangeEvent) => {
@@ -281,6 +287,25 @@ const ShipmentsDashboard = () => {
                     <MenuItem value=''>Todos los orígenes</MenuItem>
                     {store?.addressSelects?.sellerAddress.map((address) => (
                       <MenuItem key={address} value={address}>{address}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item sm={4} xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id='origin-select'>Fecha de envío</InputLabel>
+                  <Select
+                    fullWidth
+                    value={deliveryTime}
+                    id='select-date'
+                    label='Select Date'
+                    labelId='date-select'
+                    onChange={handleDeliveryTimeChange}
+                    inputProps={{ placeholder: 'Fecha de envío' }}
+                  >
+                    <MenuItem value=''>Fecha de envío</MenuItem>
+                    {store?.addressSelects?.deliveryTime?.map((deliveryTime, index) => (
+                      <MenuItem key={index} value={deliveryTime}>{deliveryTime}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
