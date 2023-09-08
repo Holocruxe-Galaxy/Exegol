@@ -89,7 +89,6 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
 ) => {
   const { q = '', deliveryPreferences = null, deliveryTime = null, seller = null, sellerAddress = null } = params ?? ''
   const queryLowered = q.toLowerCase();
-  console.log(deliveryTime)
 
   const filteredData = allData.filter(
     ({ coreData }) => (
@@ -115,7 +114,7 @@ export const appShipmentsSlice = createSlice({
     total: 1,
     params: {},
     allData: [],
-    addressSelects: { seller: [], sellerAddress: [] }
+    addressSelects: { seller: [], sellerAddress: [], deliveryTime: [] }
   } as ShipmentReducer,
   reducers: {},
   extraReducers: builder => {
