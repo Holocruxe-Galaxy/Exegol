@@ -87,6 +87,7 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
 
   const filteredData = allData.filter(
     ({ coreData }) => (
+      coreData.id.toString().includes(queryLowered) ||
       coreData.seller.toLowerCase().includes(queryLowered) ||
       coreData.address.toLowerCase().includes(queryLowered) ||
       coreData.deliveryPreferences.toLowerCase().includes(queryLowered) ||
