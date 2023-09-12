@@ -20,12 +20,21 @@ export interface CoreData {
   seller: string
   sellerAddress: string
   deliveryPreferences: string
+  destinationLatitude: number;
+  destinationLongitude: number;
+  status: string;
+  originLatitude?: number;
+  originLongitude?: number;
   deliveryTime?: string
+  order?: number | string;
+  deliveryType?: string;
 }
 
 interface AddressSelects {
   seller: string[]
+  deliveryTime: string[]
   sellerAddress: string[]
+  status: string[]
 }
 
 interface ShipmentReducer {
@@ -38,16 +47,22 @@ interface ShipmentReducer {
 
 function populateAddressStates(data: Shipment[]): AddressSelects  {
   const sellerAddress: string[] = [];
+  const deliveryTime: string[] = [];
   const seller: string[] = [];
+  const status: string[] = [];
 
   data.map(({ coreData }) => {
     if(coreData.sellerAddress) {
       sellerAddress.includes(coreData.sellerAddress) || sellerAddress.push(coreData.sellerAddress)
     }
+    if(coreData.deliveryTime) {
+      deliveryTime.includes(coreData.deliveryTime) || deliveryTime.push(coreData.deliveryTime)
+    }
       seller.includes(coreData.seller) || seller.push(coreData.seller)
+      status.includes(coreData.status) || status.push(coreData.status)
   })
   
-return { sellerAddress, seller }
+  return { sellerAddress, seller, deliveryTime, status }
 }
 
 // ** Fetch Users
@@ -82,19 +97,32 @@ export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
 export const filterData = createAsyncThunk('appShipment/filterData', async (
   { allData, params }: Pick<ShipmentReducer, 'allData' | 'params'>
 ) => {
-  const { q = '', deliveryPreferences = null, seller = null, sellerAddress = null } = params ?? ''
+  const {
+    q = '',
+    deliveryPreferences = null,
+    deliveryTime = null,
+    seller = null,
+    sellerAddress = null,
+    status = null
+  } = params ?? ''
   const queryLowered = q.toLowerCase();
+  console.log(status)
 
   const filteredData = allData.filter(
     ({ coreData }) => (
+      coreData.id.toString().includes(queryLowered) ||
+      coreData.order?.toString().includes(queryLowered) ||
       coreData.seller.toLowerCase().includes(queryLowered) ||
+      coreData.status.toLowerCase().includes(queryLowered) ||
       coreData.address.toLowerCase().includes(queryLowered) ||
       coreData.deliveryPreferences.toLowerCase().includes(queryLowered) ||
       (coreData.deliveryTime && coreData.deliveryTime.toLowerCase().includes(queryLowered))
     ) &&
+      coreData.deliveryTime === (deliveryTime || coreData.deliveryTime) &&
       coreData.deliveryPreferences === (deliveryPreferences || coreData.deliveryPreferences) &&
       coreData.sellerAddress === (sellerAddress || coreData.sellerAddress) &&
-      coreData.seller === (seller || coreData.seller)
+      coreData.seller === (seller || coreData.seller) &&
+      coreData.status === (status || coreData.status)
   )
   
   return filteredData as Shipment[]
@@ -107,7 +135,7 @@ export const appShipmentsSlice = createSlice({
     total: 1,
     params: {},
     allData: [],
-    addressSelects: { seller: [], sellerAddress: [] }
+    addressSelects: { seller: [], sellerAddress: [], deliveryTime: [], status: [] }
   } as ShipmentReducer,
   reducers: {},
   extraReducers: builder => {

@@ -17,7 +17,11 @@ const translatedFields: TranslatedFields = {
   sellerAddress: 'Origen',
   zipCode: 'Zip',
   deliveryPreferences: 'Tipo de envío',
-  deliveryTime: 'Fecha estimada de envío'
+  deliveryTime: 'Fecha estimada de envío',
+  destinationLatitude: 'Latitud',
+  destinationLongitude: 'Longitud',
+  status: 'Estado',
+  order: 'Código de venta',
 } 
 
 class FileExporter {
@@ -38,13 +42,16 @@ class FileExporter {
     const columns: Column[] = []
 
     for(const key in data[0]) {
+      if(key === 'originLatitude') continue
+      if (key === 'originLongitude') continue
+      if (key === 'deliveryType') continue
       const translatedKey = this.translateKeys(key as keyof CoreData)
       columns.push({
         label: this.toUpperCaseFirstLetter(translatedKey),
         value: translatedKey,
       })
     }
-
+    
     return columns
   }
 
@@ -54,6 +61,9 @@ class FileExporter {
     data.map((shipment) => {
       let translated: any = {}
       for(const key in shipment) {
+        if(key === 'originLatitude') continue
+        if (key === 'originLongitude') continue
+        if (key === 'deliveryType') continue
         const translatedKey = this.translateKeys(key as keyof CoreData)
         translated = {
           ...translated,

@@ -68,13 +68,53 @@ const columns: GridColDef[] = [
   },
   {
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 150,
+    maxWidth: 150,
+    field: 'codigo de venta',
+    sortable: false,
+    headerName: 'Código de venta',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+          <Typography noWrap variant='caption'>
+            {`${row.coreData.order}`}
+          </Typography>
+        </Box>
+      );
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 300,
     field: 'Destino',
+    resizable: true,
     sortable: false,
     headerName: 'Destino',
     renderCell: ({ row }: CellType) => {
       return (
-        <Typography noWrap variant='body2'>
+        <Typography sx={{
+            display: 'flex',
+            overflow: 'auto',
+            width: 'fit-content',
+            maxWidth: '100vw',
+            position: 'relative',
+            scrollbarWidth: '0.1rem',
+            "&::-webkit-scrollbar": {
+              width: '10px',
+              height: '5px'
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: 'primary.main',
+              width: '0.1rem',
+              borderRadius: 2
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: 'background.default',
+              width: '0.1rem',
+              borderRadius: 2
+            }
+          }}
+          noWrap variant='body2'>
           {row.coreData.address}
         </Typography>
       );
@@ -82,7 +122,8 @@ const columns: GridColDef[] = [
   },
   {
     flex: 0.2,
-    maxWidth: 100,
+    minWidth: 160,
+    maxWidth: 160,
     field: 'FechaDeEnvío',
     sortable: false,
     headerName: 'Fecha de envío',
@@ -97,6 +138,7 @@ const columns: GridColDef[] = [
   {
     flex: 0.15,
     maxWidth: 100,
+    minWidth: 100,
     headerName: 'Zip',
     field: 'Zip',
     sortable: false,
@@ -109,56 +151,9 @@ const columns: GridColDef[] = [
     }
   },
   {
-    flex: 0.15,
-    field: 'comprador',
-    minWidth: 150,
-    headerName: 'Comprador',
-    sortable: false,
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.coreData.buyer}
-          </Typography>
-        </Box>
-      );
-    }
-  },
-  {
-    flex: 0.15,
-    field: 'vendedeor',
-    sortable: false,
-    minWidth: 150,
-    headerName: 'Vendedor',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.coreData.seller}
-          </Typography>
-        </Box>
-      );
-    }
-  },
-  {
-    flex: 0.15,
-    field: 'Origen',
-    sortable: false,
-    minWidth: 150,
-    headerName: 'Origen',
-    renderCell: ({ row }: CellType) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.coreData.sellerAddress}
-          </Typography>
-        </Box>
-      );
-    }
-  },
-  {
     flex: 0.1,
-    minWidth: 110,
+    maxWidth: 120,
+    minWidth: 120,
     field: 'envío',
     sortable: false,
     headerName: 'Envío',
@@ -173,15 +168,167 @@ const columns: GridColDef[] = [
         />
       );
     }
-  }
+  },
+  {
+    flex: 0.2,
+    minWidth: 150,
+    field: 'Estado',
+    resizable: true,
+    sortable: false,
+    headerName: 'Estado',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.status}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.15,
+    field: 'comprador',
+    maxWidth: 280,
+    minWidth: 280,
+    headerName: 'Comprador',
+    sortable: false,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap sx={{
+          display: 'flex',
+          overflow: 'auto',
+          width: 'fit-content',
+          maxWidth: '100vw',
+          position: 'relative',
+          scrollbarWidth: '0.1rem',
+          "&::-webkit-scrollbar": {
+            width: '10px',
+            height: '5px'
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: 'primary.main',
+            width: '0.1rem',
+            borderRadius: 2
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: 'background.default',
+            width: '0.1rem',
+            borderRadius: 2
+          }
+        }}>
+            {row.coreData.buyer}
+      </Typography>);
+    }
+  },
+  {
+    flex: 0.15,
+    field: 'vendedeor',
+    sortable: false,
+    minWidth: 240,
+    headerName: 'Vendedor',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap sx={{
+          display: 'flex',
+          overflow: 'auto',
+          width: 'fit-content',
+          maxWidth: '100vw',
+          position: 'relative',
+          scrollbarWidth: '0.1rem',
+          "&::-webkit-scrollbar": {
+            width: '10px',
+            height: '5px'
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: 'primary.main',
+            width: '0.1rem',
+            borderRadius: 2
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: 'background.default',
+            width: '0.1rem',
+            borderRadius: 2
+          }
+        }}>
+          {row.coreData.seller}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 140,
+    field: 'Latitud',
+    resizable: true,
+    sortable: false,
+    headerName: 'Latitud',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.destinationLatitude}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 140,
+    field: 'Longitud',
+    resizable: true,
+    sortable: false,
+    headerName: 'Longitud',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.coreData.destinationLongitude}
+        </Typography>
+      );
+    }
+  },
+  {
+    flex: 0.15,
+    field: 'Origen',
+    sortable: false,
+    minWidth: 340,
+    headerName: 'Origen',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap sx={{
+          display: 'flex',
+          overflow: 'auto',
+          width: 'fit-content',
+          maxWidth: '100vw',
+          position: 'relative',
+          scrollbarWidth: '0.1rem',
+          "&::-webkit-scrollbar": {
+            width: '10px',
+            height: '5px'
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: 'primary.main',
+            width: '0.1rem',
+            borderRadius: 2
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: 'background.default',
+            width: '0.1rem',
+            borderRadius: 2
+          }
+        }}>
+          {row.coreData.sellerAddress}
+        </Typography>
+      );
+    }
+  },
 ];
 
 const ShipmentsDashboard = () => {
   // ** State
   const [deliveryPreferences, setDeliveryPreferences] = useState<string>('');
   const [sellerAddress, setSellerAddress] = useState<string>('');
+  const [deliveryTime, setDeliveryTime] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [seller, setSeller] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const apiRef = useGridApiRef();
 
@@ -203,14 +350,16 @@ const ShipmentsDashboard = () => {
       allData: store.allData,
       params: {
         deliveryPreferences,
+        deliveryTime,
         seller,
+        status,
         q: value,
         sellerAddress
       }
     }));
 
     // eslint-disable-next-line
-  }, [dispatch, sellerAddress, deliveryPreferences, seller, value]);
+  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, value]);
 
   const handleFilter = useCallback((val: string) => {
     setValue(val);
@@ -220,12 +369,20 @@ const ShipmentsDashboard = () => {
     setDeliveryPreferences(e.target.value);
   }, []);
 
+  const handleDeliveryTimeChange = useCallback((e: SelectChangeEvent) => {
+    setDeliveryTime(e.target.value);
+  }, []);
+
   const handleAddressChange = useCallback((e: SelectChangeEvent) => {
     setSellerAddress(e.target.value);
   }, []);
 
   const handleSellerChange = useCallback((e: SelectChangeEvent) => {
     setSeller(e.target.value);
+  }, []);
+
+  const handleStatusChange = useCallback((e: SelectChangeEvent) => {
+    setStatus(e.target.value);
   }, []);
 
   const onClick = (e: MouseEvent) => {
@@ -287,6 +444,25 @@ const ShipmentsDashboard = () => {
               </Grid>
               <Grid item sm={4} xs={12}>
                 <FormControl fullWidth>
+                  <InputLabel id='origin-select'>Fecha de envío</InputLabel>
+                  <Select
+                    fullWidth
+                    value={deliveryTime}
+                    id='select-date'
+                    label='Select Date'
+                    labelId='date-select'
+                    onChange={handleDeliveryTimeChange}
+                    inputProps={{ placeholder: 'Fecha de envío' }}
+                  >
+                    <MenuItem value=''>Fecha de envío</MenuItem>
+                    {store?.addressSelects?.deliveryTime?.map((deliveryTime, index) => (
+                      <MenuItem key={index} value={deliveryTime}>{deliveryTime}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item sm={4} xs={12}>
+                <FormControl fullWidth>
                   <InputLabel id='status-select'>Vendedor</InputLabel>
                   <Select
                     fullWidth
@@ -300,6 +476,25 @@ const ShipmentsDashboard = () => {
                     <MenuItem value=''>Todos los vendedores</MenuItem>
                     {store?.addressSelects?.seller.map((seller) => (
                       <MenuItem key={seller} value={seller}>{seller}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item sm={4} xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id='status-select'>Estado</InputLabel>
+                  <Select
+                    fullWidth
+                    value={status}
+                    id='select-status'
+                    label='Select Status'
+                    labelId='status-select'
+                    onChange={handleStatusChange}
+                    inputProps={{ placeholder: 'Estado' }}
+                  >
+                    <MenuItem value=''>Todos los estados</MenuItem>
+                    {store?.addressSelects?.status.map((status) => (
+                      <MenuItem key={status} value={status}>{status}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -335,7 +530,23 @@ const ShipmentsDashboard = () => {
             pageSizeOptions={[10, 25, 50]}
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
-            sx={{ '& .MuiDataGrid-columnHeaders': { borderRadius: 0 } }}
+            sx={{
+              '& .MuiDataGrid-columnHeaders': { borderRadius: 0 },
+              "& .MuiDataGrid-virtualScroller::-webkit-scrollbar": {
+                width: '10px',
+                height: '5px'
+              },
+              "& .MuiDataGrid-virtualScroller::-webkit-scrollbar-track": {
+                backgroundColor: 'primary.main',
+                width: '0.1rem',
+                borderRadius: 2
+              },
+              "& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb": {
+                backgroundColor: 'background.default',
+                width: '0.1rem',
+                borderRadius: 2
+              }
+            }}
           />
         </Card>
       </Grid>
