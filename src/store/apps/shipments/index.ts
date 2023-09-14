@@ -140,7 +140,6 @@ export const appShipmentsSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload.shipments
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData

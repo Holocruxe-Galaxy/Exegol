@@ -359,7 +359,7 @@ const ShipmentsDashboard = () => {
     }));
 
     // eslint-disable-next-line
-  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, value]);
+  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, value, store.allData]);
 
   const handleFilter = useCallback((val: string) => {
     setValue(val);
