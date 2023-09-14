@@ -106,7 +106,6 @@ export const filterData = createAsyncThunk('appShipment/filterData', async (
     status = null
   } = params ?? ''
   const queryLowered = q.toLowerCase();
-  console.log(status)
 
   const filteredData = allData.filter(
     ({ coreData }) => (
