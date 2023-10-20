@@ -1,5 +1,5 @@
 import { Manager, Socket } from "socket.io-client";
-import { fetchData } from "src/store/apps/shipments";
+import { addFromSocket } from "src/store/apps/shipments";
 
 let socket: Socket
 
@@ -14,5 +14,5 @@ export const connectToServer = (dispatch: any) => {
   socket = manager.socket('/');
 
   socket.on('exception', (res) => res.map((e: string) => e));
-  socket.on('broadcast', () => dispatch(fetchData()));
+  socket.on('broadcast', () => dispatch(addFromSocket()));
 }

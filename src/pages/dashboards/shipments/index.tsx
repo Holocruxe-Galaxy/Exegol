@@ -87,7 +87,6 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 300,
     field: 'Destino',
-    resizable: true,
     sortable: false,
     headerName: 'Destino',
     renderCell: ({ row }: CellType) => {
@@ -173,7 +172,6 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 150,
     field: 'Estado',
-    resizable: true,
     sortable: false,
     headerName: 'Estado',
     renderCell: ({ row }: CellType) => {
@@ -258,7 +256,6 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 140,
     field: 'Latitud',
-    resizable: true,
     sortable: false,
     headerName: 'Latitud',
     renderCell: ({ row }: CellType) => {
@@ -273,7 +270,6 @@ const columns: GridColDef[] = [
     flex: 0.2,
     minWidth: 140,
     field: 'Longitud',
-    resizable: true,
     sortable: false,
     headerName: 'Longitud',
     renderCell: ({ row }: CellType) => {
@@ -331,32 +327,46 @@ const ShipmentsDashboard = () => {
   const [status, setStatus] = useState<string>('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const apiRef = useGridApiRef();
-
+  
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>();
   const store = useSelector((state: RootState) => state.shipment);
+  const [rowCountState, setRowCountState] = useState(store.total || 0);
+
+  useEffect(() => {
+    setRowCountState((prevRowCountState) =>
+    store.total !== undefined ? store.total : prevRowCountState,
+    );
+  }, [store.total, setRowCountState]);
 
   useEffect(() => {
     connectToServer(dispatch);
     dispatch(
-      fetchData()
+      fetchData({
+        limit: paginationModel.pageSize,
+        skip: (paginationModel.pageSize * paginationModel.page) + 1
+      })
     );
 
     // eslint-disable-next-line
   }, []);
-
+  
   useEffect(() => {
     dispatch(filterData({
-      allData: store.allData,
-      params: {
-        deliveryPreferences,
-        deliveryTime,
-        seller,
-        status,
-        q: value,
-        sellerAddress
-      }
+      limit: paginationModel.pageSize,
+      skip: (paginationModel.pageSize * paginationModel.page),
+      ...(deliveryPreferences.length && { deliveryPreferences }),
+      ...(deliveryTime.length && { deliveryTime }),
+      ...(seller.length && { seller }),
+      ...(status.length && { status }),
+      ...(sellerAddress.length && { sellerAddress }),
     }));
+
+    // eslint-disable-next-line
+  }, [paginationModel, store.total]);
+
+  useEffect(() => {
+    setPaginationModel({ pageSize: paginationModel.pageSize, page: 0 })
 
     // eslint-disable-next-line
   }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, value, store.allData]);
@@ -436,7 +446,7 @@ const ShipmentsDashboard = () => {
                     inputProps={{ placeholder: 'Origen' }}
                   >
                     <MenuItem value=''>Todos los orígenes</MenuItem>
-                    {store?.addressSelects?.sellerAddress.map((address) => (
+                    {store?.filters?.sellerAddress.map((address) => (
                       <MenuItem key={address} value={address}>{address}</MenuItem>
                     ))}
                   </Select>
@@ -455,7 +465,7 @@ const ShipmentsDashboard = () => {
                     inputProps={{ placeholder: 'Fecha de envío' }}
                   >
                     <MenuItem value=''>Fecha de envío</MenuItem>
-                    {store?.addressSelects?.deliveryTime?.map((deliveryTime, index) => (
+                    {store?.filters?.deliveryTime?.map((deliveryTime, index) => (
                       <MenuItem key={index} value={deliveryTime}>{deliveryTime}</MenuItem>
                     ))}
                   </Select>
@@ -474,7 +484,7 @@ const ShipmentsDashboard = () => {
                     inputProps={{ placeholder: 'Vendedor' }}
                   >
                     <MenuItem value=''>Todos los vendedores</MenuItem>
-                    {store?.addressSelects?.seller.map((seller) => (
+                    {store?.filters?.seller.map((seller) => (
                       <MenuItem key={seller} value={seller}>{seller}</MenuItem>
                     ))}
                   </Select>
@@ -493,7 +503,7 @@ const ShipmentsDashboard = () => {
                     inputProps={{ placeholder: 'Estado' }}
                   >
                     <MenuItem value=''>Todos los estados</MenuItem>
-                    {store?.addressSelects?.status.map((status) => (
+                    {store?.filters?.status.map((status) => (
                       <MenuItem key={status} value={status}>{status}</MenuItem>
                     ))}
                   </Select>
@@ -528,7 +538,9 @@ const ShipmentsDashboard = () => {
             disableColumnMenu={true}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
+            paginationMode='server'
             paginationModel={paginationModel}
+            rowCount={rowCountState}
             onPaginationModelChange={setPaginationModel}
             sx={{
               '& .MuiDataGrid-columnHeaders': { borderRadius: 0 },

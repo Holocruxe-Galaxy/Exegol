@@ -1,10 +1,27 @@
 // ** Redux Imports
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios';
+
 
 interface Shipment {
   _id: string
   coreData: CoreData
 }
+
+interface Filter {
+  sellerAddress: string[];
+  seller: string[];
+  deliveryTime: string[];
+  deliveryPreferences: string[];
+  status: string[];
+}
+
+interface Response {
+  shipments: Shipment[]
+  filters: Filter
+  count: number
+}
+
 
 export interface ResponseShipment {
   _id: string
@@ -30,11 +47,14 @@ export interface CoreData {
   deliveryType?: string;
 }
 
-interface AddressSelects {
-  seller: string[]
-  deliveryTime: string[]
-  sellerAddress: string[]
-  status: string[]
+interface FilterWithPagination {
+  limit: number;
+  skip: number;
+  sellerAddress?: string;
+  seller?: string;
+  deliveryTime?: string;
+  deliveryPreferences?: string;
+  status?: string;
 }
 
 interface ShipmentReducer {
@@ -42,50 +62,29 @@ interface ShipmentReducer {
   params: any
   total: number
   allData: Shipment[]
-  addressSelects: AddressSelects
-}
-
-function populateAddressStates(data: Shipment[]): AddressSelects  {
-  const sellerAddress: string[] = [];
-  const deliveryTime: string[] = [];
-  const seller: string[] = [];
-  const status: string[] = [];
-
-  data.map(({ coreData }) => {
-    if(coreData.sellerAddress) {
-      sellerAddress.includes(coreData.sellerAddress) || sellerAddress.push(coreData.sellerAddress)
-    }
-    if(coreData.deliveryTime) {
-      deliveryTime.includes(coreData.deliveryTime) || deliveryTime.push(coreData.deliveryTime)
-    }
-      seller.includes(coreData.seller) || seller.push(coreData.seller)
-      status.includes(coreData.status) || status.push(coreData.status)
-  })
-  
-  return { sellerAddress, seller, deliveryTime, status }
+  filters: Filter
 }
 
 // ** Fetch Users
-export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
+export const fetchData = createAsyncThunk('appShipment/fetchData', async ({ limit, skip }: { limit: number, skip: number }) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACK}/shipments`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET',
-    });
-    const shipments: Shipment[] = await response.json();
+    const { data } = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BACK}/shipments`,
+      {
+        limit,
+        skip
+      })
 
-    const ShipmentsWithId: ResponseShipment[] = shipments.map((e) => {
+    const shipmentsWithId: ResponseShipment[] = data.shipments.map((e) => {
       const withId = { id: e._id, ...e }; 
 
       return withId;
     })
-    const addressSelects = populateAddressStates(shipments)
 
     const dispatchableData = {
-      allData: ShipmentsWithId,
-      shipments: ShipmentsWithId,
-      total: ShipmentsWithId.length,
-      addressSelects: addressSelects
+      allData: shipmentsWithId,
+      shipments: shipmentsWithId,
+      total: data.count,
+      filters: data.filters
     }
     
     return dispatchableData as any;
@@ -94,37 +93,40 @@ export const fetchData = createAsyncThunk('appShipment/fetchData', async () => {
   }
 })
 
-export const filterData = createAsyncThunk('appShipment/filterData', async (
-  { allData, params }: Pick<ShipmentReducer, 'allData' | 'params'>
-) => {
-  const {
-    q = '',
-    deliveryPreferences = null,
-    deliveryTime = null,
-    seller = null,
-    sellerAddress = null,
-    status = null
-  } = params ?? ''
-  const queryLowered = q.toLowerCase();
+export const addFromSocket = createAsyncThunk('appShipment/addFromSocket', async () => {
+  return 1
+})
 
-  const filteredData = allData.filter(
-    ({ coreData }) => (
-      coreData.id.toString().includes(queryLowered) ||
-      coreData.order?.toString().includes(queryLowered) ||
-      coreData.seller.toLowerCase().includes(queryLowered) ||
-      coreData.status.toLowerCase().includes(queryLowered) ||
-      coreData.address.toLowerCase().includes(queryLowered) ||
-      coreData.deliveryPreferences.toLowerCase().includes(queryLowered) ||
-      (coreData.deliveryTime && coreData.deliveryTime.toLowerCase().includes(queryLowered))
-    ) &&
-      coreData.deliveryTime === (deliveryTime || coreData.deliveryTime) &&
-      coreData.deliveryPreferences === (deliveryPreferences || coreData.deliveryPreferences) &&
-      coreData.sellerAddress === (sellerAddress || coreData.sellerAddress) &&
-      coreData.seller === (seller || coreData.seller) &&
-      coreData.status === (status || coreData.status)
-  )
-  
-  return filteredData as Shipment[]
+
+export const clearData = createAsyncThunk('appShipment/clearData', async () => {
+  return []
+})
+
+export const filterData = createAsyncThunk('appShipment/filterData', async (
+  { limit, skip, ...filters }: FilterWithPagination
+) => {
+  try {
+    const { data } = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BACK}/shipments`, {
+      limit,
+      skip,
+      ...filters
+    })
+
+    const shipmentsWithId: ResponseShipment[] = data.shipments.map((e) => {
+      const withId = { id: e._id, ...e }; 
+
+      return withId;
+    })
+
+    const response = { 
+      data: shipmentsWithId,
+      total: data.count
+    }
+    
+    return response as any
+  } catch (err) {
+    console.log(err);
+  }
 })
 
 export const appShipmentsSlice = createSlice({
@@ -134,7 +136,7 @@ export const appShipmentsSlice = createSlice({
     total: 1,
     params: {},
     allData: [],
-    addressSelects: { seller: [], sellerAddress: [], deliveryTime: [], status: [] }
+    filters: { seller: [], sellerAddress: [], deliveryTime: [], deliveryPreferences: [], status: [] }
   } as ShipmentReducer,
   reducers: {},
   extraReducers: builder => {
@@ -142,10 +144,17 @@ export const appShipmentsSlice = createSlice({
       state.total = action.payload.total
       state.params = action.payload.params
       state.allData = action.payload.allData
-      state.addressSelects = action.payload.addressSelects
+      state.filters = action.payload.filters
+    })
+    builder.addCase(clearData.fulfilled, (state, action) => {
+      state.data = action.payload
+    })
+    builder.addCase(addFromSocket.fulfilled, (state) => {
+      state.total = state.total + 1
     })
     builder.addCase(filterData.fulfilled, (state, action) => {
-      state.data = action.payload
+      state.data = action.payload.data
+      state.total = action.payload.total
     })
   }
 })
