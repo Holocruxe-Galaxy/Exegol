@@ -33,6 +33,7 @@ import { connectToServer } from 'src/libs/socket.io';
 
 import { CoreData, ResponseShipment, fetchData, filterData } from 'src/store/apps/shipments';
 import { fileExporter } from 'src/libs/xlsx/xlsx';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 
 interface UserStatusType {
@@ -327,6 +328,7 @@ const ShipmentsDashboard = () => {
   const [status, setStatus] = useState<string>('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const apiRef = useGridApiRef();
+  const debouncedValue = useDebounce(value)
   
   // ** Hooks
   const dispatch = useDispatch<AppDispatch>();
@@ -360,6 +362,7 @@ const ShipmentsDashboard = () => {
       ...(seller.length && { seller }),
       ...(status.length && { status }),
       ...(sellerAddress.length && { sellerAddress }),
+      ...(value.length && { q: value }),
     }));
 
     // eslint-disable-next-line
@@ -369,7 +372,7 @@ const ShipmentsDashboard = () => {
     setPaginationModel({ pageSize: paginationModel.pageSize, page: 0 })
 
     // eslint-disable-next-line
-  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, value, store.allData]);
+  }, [dispatch, sellerAddress, deliveryPreferences, deliveryTime, status, seller, debouncedValue, store.allData]);
 
   const handleFilter = useCallback((val: string) => {
     setValue(val);

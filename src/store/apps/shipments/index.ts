@@ -55,6 +55,7 @@ interface FilterWithPagination {
   deliveryTime?: string;
   deliveryPreferences?: string;
   status?: string;
+  q?: string;
 }
 
 interface ShipmentReducer {
